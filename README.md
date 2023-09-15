@@ -1,89 +1,50 @@
-# PASS method for LUSS task （Jittor version）
-	
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/large-scale-unsupervised-semantic/unsupervised-semantic-segmentation-on-4)](https://paperswithcode.com/sota/unsupervised-semantic-segmentation-on-4?p=large-scale-unsupervised-semantic)
+# Jittor 大规模无监督语义分割
 
-	
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/large-scale-unsupervised-semantic/unsupervised-semantic-segmentation-on-5)](https://paperswithcode.com/sota/unsupervised-semantic-segmentation-on-5?p=large-scale-unsupervised-semantic)
+## 简介
 
-	
-[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/large-scale-unsupervised-semantic/unsupervised-semantic-segmentation-on-6)](https://paperswithcode.com/sota/unsupervised-semantic-segmentation-on-6?p=large-scale-unsupervised-semantic)
-
-
-
-## Introduction
 ![image](https://user-images.githubusercontent.com/20515144/196449430-5ac6a88c-24ea-4a82-8a45-cd244aeb0b3b.png)
 
-We propose a new method for LUSS, namely PASS, containing four steps. 1) A randomly initialized model is trained with self-supervision of pretext tasks (i.e. our proposed Non-contrastive pixel-to-pixel representation alignment and Deep-to-shallow supervision) to learn shape and category representations. After representation learning, we obtain the features set for all training images. 2) We then apply a pixel-attention-based clustering scheme to obtain pseudo categories and assign generated categories to each image pixel. 3) We fine-tune the pre-trained model with the generated pseudo labels to improve the segmentation quality. 4) During inference, the LUSS model assigns generated labels to each pixel of images, same to the supervised model. 
+PASS是一种新的大规模无监督语义分割方法，包含四个步骤。1） 通过基于代理任务的自监督表征学习方法（即非对比的像素级表征对齐策略，和自深到浅的监督策略）训练随机初始化的模型，以学习形状和类别表征。在表征学习之后，我们获得所有训练图像的特征集。2） 通过基于像素注意力的聚类方法获得伪类别，并将生成的类别分配给每个图像像素。3） 用生成的伪标签对预训练的模型进行微调，以提高分割质量。4） 在推理过程中，LUSS模型将生成的标签分配给图像的每个像素，与有监督模型相同。
 
-More details about the LUSS task and [ImageNet-S dataset](https://github.com/LUSSeg/ImageNet-S) are in [project page](https://LUSSeg.github.io/) and [paper link](https://arxiv.org/abs/2106.03149).
+#### 运行环境
+
+* 系统: **Linux**(e.g. Ubuntu/CentOS/Arch), **macOS**, 或者 **Windows Subsystem of Linux (WSL)**
+* Python版本 >= 3.7
+* CPU 编译器
+    * g++ (>=5.4.0)
+    * clang (>=8.0)
 
 
+#### 安装依赖
 
-## Usage
-We give the training and inference details in **[USAGE](USAGE.md)**.
-## Results
-**Fully Unsupervised Evaluation Protocol**
-<table><tbody>
-<!-- START TABLE -->
-<!-- TABLE HEADER -->
-<th valign="bottom">Dataset</th>
-<th valign="bottom">Arch</th>
-<th valign="bottom">Val</th>
-<th valign="bottom">Test</th>
-<th valign="bottom">Args</th>
-<th valign="bottom">Pretrained</th>
-<th valign="bottom">Pixelatt</th>
-<th valign="bottom">Centroid</th>
-<th valign="bottom">Finetuned</th>
-<!-- TABLE BODY -->
-<tr>
-<td align="left">ImageNet-S</td>
-<td align="center">ResNet50</td>
-<td align="center">11.4</td>
-<td align="center">10.3</td>
-<td align="center"><a href="scripts/luss919_pass_jt.sh">bash</a></td>
-<td align="center"><a href="">model</a></td>
-<td align="center"><a href="">model</a></td>
-<td align="center"><a href="">centroid</a></td>
-<td align="center"><a href="">model</a></td>
-</tr>
-<td align="left">ImageNet-S 300</td>
-<td align="center">ResNet50</td>
-<td align="center">17.8</td>
-<td align="center">17.4</td>
-<td align="center"><a href="scripts/luss300_pass_jt.sh">bash</a></td>
-<td align="center"><a href="">model</a></td>
-<td align="center"><a href="">model</a></td>
-<td align="center"><a href="">centroid</a></td>
-<td align="center"><a href="">model</a></td>
-</tr>
-</tr>
-<td align="left">ImageNet-S 50</td>
-<td align="center">ResNet50</td>
-<td align="center">29.2</td>
-<td align="center">29.8</td>
-<td align="center"><a href="scripts/luss50_pass_jt.sh">bash</a></td>
-<td align="center"><a href="">model</a></td>
-<td align="center"><a href="">model</a></td>
-<td align="center"><a href="">centroid</a></td>
-<td align="center"><a href="">model</a></td>
-</tr>
-</tbody></table>
+## 第一步: 安装计图
+计图的安装可以参考以下文档[Jittor install](https://github.com/Jittor/jittor#install)
 
-## Citation
-```
-@article{gao2022luss,
-  title={Large-scale Unsupervised Semantic Segmentation},
-  author={Gao, Shanghua and Li, Zhong-Yu and Yang, Ming-Hsuan and Cheng, Ming-Ming and Han, Junwei and Torr, Philip},
-  journal=TPAMI,
-  year={2022}
-}
+## 第二步: 安装依赖
+```shell
+python -m pip install scikit-learn
+python -m pip install pandas
+python -m pip install munkres
+python -m pip install tqdm
+python -m pip install pillow
+python -m pip install opencv-python
+python -m pip install faiss-gpu
 ```
 
-## Acknowledgement
+## 训练
 
-This codebase is build based on the [SwAV codebase](https://github.com/facebookresearch/swav).
+单卡训练可运行以下命令：
+```
+sh train.sh
+```
+## 推理
 
-If you have any other question, open an issue or email us via shgao@live.com
+生成测试集上的结果可以运行以下命令：
 
+```
+sh test.sh
+```
 
+## 致谢
+
+此项目基于论文 *Large-scale Unsupervised Semantic Segmentation* 实现
